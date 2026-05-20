@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Dashboard Geral{% endblock %}
+{% block refresh %}<meta http-equiv="refresh" content="15">{% endblock %}
+{% block content %}
+<div class="hero"><h1>Dashboard de Monitoramento Energético Industrial</h1><p>Visão geral em tempo real do consumo, desempenho das máquinas e indicadores de sustentabilidade.</p></div>
+<div class="grid-kpi">
+    <div class="kpi-card"><small>Total de máquinas</small><strong>{{ resumo.total_maquinas }}</strong><span class="tag">Monitoradas</span></div>
+    <div class="kpi-card"><small>Energia total</small><strong>{{ resumo.energia_total }} kWh</strong><span class="tag">Consumo acumulado</span></div>
+    <div class="kpi-card"><small>Potência média</small><strong>{{ resumo.potencia_media }} W</strong><span class="tag">Operação</span></div>
+    <div class="kpi-card"><small>Pico de potência</small><strong>{{ resumo.pico_potencia }} W</strong><span class="tag">Maior registro</span></div>
+</div>
+<div class="machine-grid">
+{% for m in maquinas %}
+    <div class="machine-card">
+        <div class="machine-header"><div><h2>🔧 {{ m.nome }}</h2><p>{{ m.tipo or 'Não informado' }} | {{ m.setor or 'Não informado' }}</p></div><span class="badge">Ativa</span></div>
+        <div class="mini-kpis">
+            <div class="mini-kpi"><small>Tensão média</small><strong>{{ m.tensao_media }} V</strong></div>
+            <div class="mini-kpi"><small>Corrente média</small><strong>{{ m.corrente_media }} A</strong></div>
+            <div class="mini-kpi"><small>Potência média</small><strong>{{ m.potencia_media }} W</strong></div>
+            <div class="mini-kpi"><small>Energia total</small><strong>{{ m.energia_total }} kWh</strong></div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+<br>
+<div class="card">
+    <h2 class="card-title">Últimas medições registradas</h2>
+    <div class="table-wrap"><table>
+        <tr><th>Máquina</th><th>Tensão</th><th>Corrente</th><th>Potência</th><th>Energia</th><th>Data/Hora</th></tr>
+        {% for d in ultimas %}
+        <tr><td>{{ d.nome_maquina }}</td><td>{{ d.tensao }} V</td><td>{{ d.corrente }} A</td><td>{{ d.potencia }} W</td><td>{{ d.energia }} kWh</td><td>{{ d.timestamp }}</td></tr>
+        {% endfor %}
+    </table></div>
+</div>
+{% endblock %}

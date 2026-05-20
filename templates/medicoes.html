@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Medições{% endblock %}
+{% block refresh %}<meta http-equiv="refresh" content="15">{% endblock %}
+{% block content %}
+<div class="hero"><h1>Medições Energéticas</h1><p>Histórico das leituras de tensão, corrente, potência e energia enviadas pelo ESP32 ou lançadas manualmente.</p></div>
+<div class="card">
+    <h2 class="card-title">➕ Inserir medição manual</h2>
+    <form method="POST" action="/nova_medicao" class="form-grid">
+        <select name="id_maquina" required><option value="">Selecione a máquina</option>{% for m in maquinas %}<option value="{{ m.id_maquina }}">{{ m.nome }}</option>{% endfor %}</select>
+        <input name="tensao" placeholder="Tensão (V)" required>
+        <input name="corrente" placeholder="Corrente (A)" required>
+        <input name="potencia" placeholder="Potência (W)" required>
+        <input name="energia" placeholder="Energia (kWh)" required>
+        <button type="submit" class="btn-primary">Salvar medição</button>
+    </form>
+</div>
+<br>
+<div class="card">
+    <h2 class="card-title">Últimas medições</h2>
+    <div class="table-wrap"><table>
+        <tr><th>ID</th><th>Máquina</th><th>Tensão</th><th>Corrente</th><th>Potência</th><th>Energia</th><th>Data/Hora</th><th>Ação</th></tr>
+        {% for d in medicoes %}
+        <tr>
+            <td>{{ d.id }}</td><td>{{ d.nome_maquina }}</td><td>{{ d.tensao }} V</td><td>{{ d.corrente }} A</td><td>{{ d.potencia }} W</td><td>{{ d.energia }} kWh</td><td>{{ d.timestamp }}</td>
+            <td><form method="POST" action="/excluir_medicao/{{ d.id }}" onsubmit="return confirm('Excluir esta medição?')"><button class="btn-danger">Excluir</button></form></td>
+        </tr>
+        {% endfor %}
+    </table></div>
+</div>
+{% endblock %}

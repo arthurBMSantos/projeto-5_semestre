@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Máquinas{% endblock %}
+{% block content %}
+<div class="hero"><h1>Gestão de Máquinas</h1><p>Cadastro, organização e controle dos equipamentos monitorados pelo sistema.</p></div>
+<div class="card">
+    <h2 class="card-title">➕ Cadastrar Máquina</h2>
+    <form method="POST" action="/nova_maquina" class="form-grid">
+        <input name="nome" placeholder="Nome da máquina" required>
+        <input name="tipo" placeholder="Tipo">
+        <input name="setor" placeholder="Setor">
+        <input name="potencia" placeholder="Potência nominal">
+        <button type="submit" class="btn-primary">Cadastrar</button>
+    </form>
+</div>
+<br>
+<div class="card">
+    <h2 class="card-title">Máquinas cadastradas</h2>
+    <div class="table-wrap"><table>
+        <tr><th>ID</th><th>Nome</th><th>Tipo</th><th>Setor</th><th>Potência nominal</th><th>Medições</th><th>Energia total</th><th>Ação</th></tr>
+        {% for m in maquinas %}
+        <tr>
+            <td>{{ m.id_maquina }}</td><td><strong>{{ m.nome }}</strong></td><td>{{ m.tipo or 'Não informado' }}</td><td>{{ m.setor or 'Não informado' }}</td><td>{{ m.potencia_nominal or 0 }} W</td><td><span class="badge-blue badge">{{ m.total_medicoes }}</span></td><td>{{ m.energia_total }} kWh</td>
+            <td><form method="POST" action="/excluir_maquina/{{ m.id_maquina }}" onsubmit="return confirm('Excluir máquina e medições?')"><button class="btn-danger">Excluir</button></form></td>
+        </tr>
+        {% endfor %}
+    </table></div>
+</div>
+{% endblock %}

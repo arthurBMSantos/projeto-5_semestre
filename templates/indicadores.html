@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Indicadores{% endblock %}
+{% block refresh %}<meta http-equiv="refresh" content="15">{% endblock %}
+{% block content %}
+<div class="hero"><h1>Indicadores de Sustentabilidade Energética</h1><p>Análise de consumo total, consumo médio, pico de potência e desempenho energético por máquina.</p></div>
+<div class="card">
+    <h2 class="card-title">Resumo por máquina</h2>
+    <div class="table-wrap"><table>
+        <tr><th>Máquina</th><th>Tipo</th><th>Setor</th><th>Medições</th><th>Consumo total</th><th>Consumo médio</th><th>Pico consumo</th><th>Potência média</th><th>Status</th></tr>
+        {% for i in indicadores %}
+        <tr>
+            <td><strong>{{ i.nome }}</strong></td><td>{{ i.tipo or 'Não informado' }}</td><td>{{ i.setor or 'Não informado' }}</td><td>{{ i.total_medicoes }}</td><td>{{ i.consumo_total }} kWh</td><td>{{ i.consumo_medio }} kWh</td><td>{{ i.pico_consumo }} W</td><td>{{ i.potencia_media }} W</td>
+            <td>{% if i.pico_consumo > 2500 %}<span class="badge-orange badge">Atenção</span>{% else %}<span class="badge">Normal</span>{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table></div>
+</div>
+{% endblock %}
